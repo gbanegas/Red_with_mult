@@ -6,6 +6,10 @@ __pycache__/
 # C extensions
 *.so
 
+
+#XLSx
+*.xlsx
+*.xls
 # Distribution / packaging
 .Python
 env/
