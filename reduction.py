@@ -86,7 +86,7 @@ class Reduction(object):
             index = self.max_collum-1;
             row = [-1 for x in xrange(self.max_collum)]
             temp = 0
-            print temp_reuse
+            #print temp_reuse
             for j in xrange(0,self.mdegree):
                 row[index] = j + temp_reuse
                 index = index-1
