@@ -8,8 +8,9 @@ __pycache__/
 
 
 #XLSx
-*.xlsx
-*.xls
+#*.xlsx
+
+#*.xls
 # Distribution / packaging
 .Python
 env/
