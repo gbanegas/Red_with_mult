@@ -36,6 +36,7 @@ class Reduction(object):
         self.matrix = self._generate_matrix()
         exp_sorted.remove(self.mdegree)
         self.matrix = self.__multiply__(self.matrix, self.mdegree)
+        print "Finished Multiplication"
 
 
         #
@@ -48,17 +49,19 @@ class Reduction(object):
         j = 0
         for i in range(0,nr+1):
             self._reduce_others(self.matrix,exp_sorted)
-            print_matrix(self.matrix)
+            #print_matrix(self.matrix)
             j = j+1
             if self.debug:
                 xls.save(self.matrix, 'step_reduction_'+str(j))
         #
         #
+        print "Finished reduction"
         self._remove_repeat(self.matrix)
         self.clean(self.matrix)
         self.matrix = self.otimizator.sort(self.matrix)
         self.clean(self.matrix)
         self.matrix = self.reduce_matrix(self.mdegree, self.matrix)
+        print "Finished Cleaning"
         if self.debug:
             xls.save(self.matrix, 'Not Optimized')
         if not self.debug:
@@ -121,6 +124,7 @@ class Reduction(object):
                 h += 1
 
         #print_matrix(matrix_copy)
+        del matrix
         return matrix_copy
 
     def _count_matchs(self, matches):

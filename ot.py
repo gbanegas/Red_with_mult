@@ -16,7 +16,7 @@ class Ot(object):
     def optimize(self, matrix, degree, xls=None, debug=False):
         self.matrix = matrix
         self.m = defaultdict()
-        self.variable = 2*degree -1
+        self.variable = degree*degree
         is_break = False
        # xls = Xslxsaver()
        # xls.create_work([degree])
