@@ -37,7 +37,7 @@ def recoverfile(saved, readed):
 def main(argv):
     inputfile = ''
     outputfile = ''
-    debug = False
+    debug = True
     try:
         opts, args = getopt.getopt(argv,"hi:o:d",["ifile=","ofile="])
     except getopt.GetoptError:
