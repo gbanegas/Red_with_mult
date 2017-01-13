@@ -64,6 +64,7 @@ def main(argv):
     l = []
     pols = []
     files = [inputfile]
+    print "to aqui"
     for fileName in files:
         save = outputfile
         f = open(fileName,'r')

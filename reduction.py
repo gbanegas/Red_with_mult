@@ -5,7 +5,6 @@ Created on 10 Sep 2014
 '''
 
 import math
-from xlsx import Xslxsaver
 import re
 from ot import Ot
 
@@ -25,9 +24,8 @@ class Reduction(object):
 
 
     def reduction(self,exp):
-        xls = Xslxsaver()
-        if self.debug:
-            xls.create_worksheet(exp)
+
+
         self.otimizator = Ot()
         exp_sorted = sorted(exp, reverse=True)
         self.mdegree = exp_sorted[0]
@@ -44,15 +42,13 @@ class Reduction(object):
         # for i in range(0,len(exp_sorted)):
         #     self._reduce_first(self.matrix, exp_sorted[i])
         #
-        if self.debug:
-            xls.save(self.matrix, 'Multiplication')
+
         j = 0
         for i in range(0,nr+1):
             self._reduce_others(self.matrix,exp_sorted)
             #print_matrix(self.matrix)
             j = j+1
-            if self.debug:
-                xls.save(self.matrix, 'step_reduction_'+str(j))
+
         #
         #
         print "Finished reduction"
@@ -62,22 +58,18 @@ class Reduction(object):
         self.clean(self.matrix)
         self.matrix = self.reduce_matrix(self.mdegree, self.matrix)
         print "Finished Cleaning"
-        if self.debug:
-            xls.save(self.matrix, 'Not Optimized')
+
         if not self.debug:
             self.p, self.matrix = self.otimizator.optimize(self.matrix, self.mdegree)
-        if self.debug:
-            self.p, self.matrix = self.otimizator.optimize(self.matrix, self.mdegree, xls, self.debug)
+        
         self._remove_one(self.matrix)
         row = [-1 for x in xrange(self.mdegree)]
         self.matrix.append(row)
         count = self._count_xor(self.matrix,self.p)
         #count = count + self.countMatchs(otimizator.matches)
-        if self.debug:
-            xls.save(self.matrix, 'Optimized')
 
-        if self.debug:
-            xls.save_matches(self.p)
+
+
         # #print_matrix(self.matrix)
         # #print self.p
         del self.matrix
