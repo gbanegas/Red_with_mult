@@ -5,7 +5,10 @@ Created on 06 Apr 2015
 '''
 
 import math
+import threading
 from collections import defaultdict, Counter, OrderedDict
+
+from thread_pairs import ThreadGeneratePairs
 
 #from collections import defaultdict
 
@@ -64,14 +67,33 @@ class Ot(object):
         return matrix
 
     def _generate_all_pairs(self, matrix):
-        allPairs = OrderedDict()
+        lock = threading.Lock()
+    	lockScreen = threading.Lock()
+        threads = []
+        allPairs = {}
         #allPairs = []
         #print matrix
         size = len(matrix[0])
         #print "Size : " + str(size)
         for i in xrange(0,size):
-            result = self._generate_pairs(self._column(self.matrix,i))
-            for pair in result:
+            thread = ThreadGeneratePairs(i,lockScreen, lock, self._column(self.matrix,i))
+            threads.append(thread)
+
+        with lockScreen:
+            print("Starting threads")
+
+        [x.start() for x in threads]
+        [x.join() for x in threads]
+
+        with lockScreen:
+            print("Threads Done!")
+
+        result = []
+        for x in threads:
+            result.append(x.get_pairs())
+
+        for pairs in result:
+            for pair in pairs:
                 if pair in allPairs:
                     allPairs[pair] = allPairs[pair] + 1
                 else:
@@ -80,11 +102,8 @@ class Ot(object):
         keys_ordered = sorted(allPairs.values(), reverse=True)
 
         to_return = (NULL,NULL)
-        od = OrderedDict(sorted(allPairs.items()))
-
-
         index = 0
-        for pair, key in od.iteritems():
+        for pair, key in sorted(allPairs.items()):
             if key == keys_ordered[0]:
                 if key > 1:
                     to_return = pair

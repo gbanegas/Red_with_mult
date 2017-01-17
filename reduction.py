@@ -59,9 +59,8 @@ class Reduction(object):
         self.matrix = self.reduce_matrix(self.mdegree, self.matrix)
         print "Finished Cleaning"
 
-        if not self.debug:
-            self.p, self.matrix = self.otimizator.optimize(self.matrix, self.mdegree)
-        
+        self.p, self.matrix = self.otimizator.optimize(self.matrix, self.mdegree)
+
         self._remove_one(self.matrix)
         row = [-1 for x in xrange(self.mdegree)]
         self.matrix.append(row)
