@@ -20,7 +20,7 @@ def recoverfile(saved, readed):
 		pols = []
 		pols_done = []
 		for line in readed:
-			pol = Polynomial(line) 
+			pol = Polynomial(line)
 			pols.append(pol)
 		for line in f:
 			line = line.replace("[","")
@@ -28,13 +28,13 @@ def recoverfile(saved, readed):
 			spl = line.split(',')
 			p = ""
 			for i in xrange(0,len(spl)-1):
-				p = p + " + x^" + str(spl[i].replace(" ","")) 
+				p = p + " + x^" + str(spl[i].replace(" ",""))
 			p = p + " + 1"
 			p = p.replace("+","",1)
 			#print p
-			pol_ = Polynomial(p) 
+			pol_ = Polynomial(p)
 			pols_done.append(pol_)
-		
+
 		pols_set = set(pols)
 		pols_set_done = set(pols_done)
 		result = pols_set - pols_set_done
@@ -45,7 +45,7 @@ def recoverfile(saved, readed):
 if __name__ == '__main__':
 	lock = threading.Lock()
 	lockScreen = threading.Lock()
-	files = ["all_pent_19.txt"]
+	files = ["pol_163_.txt"]
 	#degrees = [21, 97, 139, 163, 233, 283, 571, 1021, 1163]
 	#degree = 571
 	for fileName in files:
@@ -56,11 +56,11 @@ if __name__ == '__main__':
 			for line in f:
 				pol = Polynomial(line)
 				pols.append(pol)
-		
+
 		print len(pols)
 		threads = []
 		i = 0
-		j = 1
+		j = 30
 		print "starting...."
 		for temp in range(0, len(pols)):
 			if (j > len(pols)):
@@ -74,9 +74,3 @@ if __name__ == '__main__':
 			thread.start()
 		for current in threads:
 			current.join()
-
-
-
-
-
-
