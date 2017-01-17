@@ -20,7 +20,7 @@ class ThreadCount(threading.Thread):
     def run(self):
         print "Starting thread: " + str(self.threadID) + '\n'
         for i in self.polynomials:
-            reduc = Reduction()
+            reduc = Reduction(False)
             self.lockscreen.acquire()
             print 'Thread: '+ str(self.threadID) + ' Doing: ' + str(i.coefs())
             self.lockscreen.release()
