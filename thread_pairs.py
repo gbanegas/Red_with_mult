@@ -13,8 +13,8 @@ class ThreadGeneratePairs(threading.Thread):
         self.result = []
 
     def run(self):
-        with self.lockscreen:
-            print("Starting thread {}".format(self.threadID))
+        #with self.lockscreen:
+        #    print("Starting thread {}".format(self.threadID))
         for i in xrange(1, len(self.collumn)):
             if self.collumn[i] <> NULL :
                 p1 = self.collumn[i]
