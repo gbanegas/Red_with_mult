@@ -64,7 +64,7 @@ def main(argv):
     l = []
     pols = []
     files = [inputfile]
-    print "to aqui"
+    #print "to aqui"
     for fileName in files:
         save = outputfile
         f = open(fileName,'r')
@@ -77,7 +77,7 @@ def main(argv):
                     print line
                     sys.exit(2)
     result = defaultdict(list)
-    print len(pols)
+    #print len(pols)
     for pol in pols:
         if len(pol.coefs()) > 1:
             red = Reduction(debug)

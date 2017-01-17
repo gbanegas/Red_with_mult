@@ -79,14 +79,14 @@ class Ot(object):
             thread = ThreadGeneratePairs(i,lockScreen, lock, self._column(self.matrix,i))
             threads.append(thread)
 
-        with lockScreen:
-            print("Starting threads")
+        #with lockScreen:
+        #    print("Starting threads")
 
         [x.start() for x in threads]
         [x.join() for x in threads]
 
-        with lockScreen:
-            print("Threads Done!")
+        #with lockScreen:
+        #    print("Threads Done!")
 
         result = []
         for x in threads:

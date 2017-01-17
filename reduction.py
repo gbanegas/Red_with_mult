@@ -34,7 +34,7 @@ class Reduction(object):
         self.matrix = self._generate_matrix()
         exp_sorted.remove(self.mdegree)
         self.matrix = self.__multiply__(self.matrix, self.mdegree)
-        print "Finished Multiplication"
+        #print "Finished Multiplication"
 
 
         #
@@ -51,13 +51,13 @@ class Reduction(object):
 
         #
         #
-        print "Finished reduction"
+        #print "Finished reduction"
         self._remove_repeat(self.matrix)
         self.clean(self.matrix)
         self.matrix = self.otimizator.sort(self.matrix)
         self.clean(self.matrix)
         self.matrix = self.reduce_matrix(self.mdegree, self.matrix)
-        print "Finished Cleaning"
+        #print "Finished Cleaning"
 
         self.p, self.matrix = self.otimizator.optimize(self.matrix, self.mdegree)
 
@@ -250,7 +250,7 @@ class Reduction(object):
     def _calc_NR(self, exp_sorted):
         nr = 2
         nr = int(math.floor((exp_sorted[0]-2)/(exp_sorted[0]-exp_sorted[1])))
-        print "NR = ", nr
+        #print "NR = ", nr
         #temp = (exp_sorted[0]+1)/2
         #deg = math.floor(temp)
         #if exp_sorted[1] > deg:
