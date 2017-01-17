@@ -6,7 +6,7 @@ Created on 06 Apr 2015
 
 import math
 import threading
-from collections import defaultdict, Counter, OrderedDict
+from collections import defaultdict
 
 from thread_pairs import ThreadGeneratePairs
 
