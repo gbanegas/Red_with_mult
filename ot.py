@@ -6,9 +6,12 @@ Created on 06 Apr 2015
 
 import math
 import threading
+import collections
 from collections import defaultdict
 
 from thread_pairs import ThreadGeneratePairs
+from itertools import groupby
+
 
 #from collections import defaultdict
 
@@ -28,7 +31,7 @@ class Ot(object):
 
         while (not is_break):
         #for i in xrange(0,1):
-
+            print "Round : ", i
             pair, is_break = self._generate_all_pairs(self.matrix)
             if debug:
                 self.xls.save(self.matrix, str(i))
@@ -41,6 +44,7 @@ class Ot(object):
 
             #print_matrix(self.matrix)
             name, self.matrix = self._change_pair(pair, self.matrix)
+            print "--------------------------------------------------"
             #xls.save(self.matrix, str(i))
             #print_matrix(self.matrix)
             #self._save_pair(pair, name)
@@ -75,41 +79,33 @@ class Ot(object):
         #print matrix
         size = len(matrix[0])
         #print "Size : " + str(size)
+        result = []
         for i in xrange(0,size):
-            thread = ThreadGeneratePairs(i,lockScreen, lock, self._column(self.matrix,i))
+            thread = ThreadGeneratePairs(i,lockScreen, lock, self._column(self.matrix,i), result)
             threads.append(thread)
 
-        #with lockScreen:
-        #    print("Starting threads")
+        with lockScreen:
+            print("Starting threads")
 
         [x.start() for x in threads]
         [x.join() for x in threads]
 
-        #with lockScreen:
-        #    print("Threads Done!")
+        with lockScreen:
+            print("Threads Done!")
 
-        result = []
-        for x in threads:
-            result.append(x.get_pairs())
-
-        for pairs in result:
-            for pair in pairs:
-                if pair in allPairs:
-                    allPairs[pair] = allPairs[pair] + 1
-                else:
-                    allPairs[pair] = 1
-
-        keys_ordered = sorted(allPairs.values(), reverse=True)
-
+        counter = collections.Counter(result)
+        max_elements = sorted(counter.values(),reverse=True)[0]
+        dic = dict(counter)
         to_return = (NULL,NULL)
         index = 0
-        for pair, key in sorted(allPairs.items()):
-            if key == keys_ordered[0]:
+        for pair, key in sorted(dic.items()):
+            if key == max_elements:
                 if key > 1:
                     to_return = pair
                     index = key
                     break
-        #print allPairs
+
+
         #print "pair: ", to_return, " index ", index
         if self._pair_equal(to_return , (NULL,NULL)):
             return to_return, True
@@ -191,27 +187,27 @@ class Ot(object):
     def _find_and_change(self, pair, matrix, name):
         for j in xrange(0, len(matrix[0])):
                 column = self._column(matrix, j)
-                result = self._generate_pairs(column)
-                if pair in result:
-                    self.removePair(pair, name, j, matrix)
+                counter = 0
+                temp = -1
+                for i in xrange(0, len(column)):
+                    if pair[0] == column[i]:
+                        temp = i
+                        counter = 1
+                        break
+                for h in xrange(0, len(column)):
+                    if pair[1] == column[h] and counter > 0:
+                        column[temp] = name
+                        column[h] = NULL
+                        break
+                if column > 0:
+                    self.matrix = self.put_column(column, matrix, j)
 
-    def removePair(self, pair, name, j, matrix):
-        #print "Pair to Remove" + str(pair) + " in column: " + str(j)
-        column = self._column(matrix, j)
-        #print "Column before: " + str(column)
-        for i in xrange(0, len(column)):
-            if column[i] == pair[0]:
-                column[i] = name
-                break
-        for i in xrange(0, len(column)):
-            if column[i] == pair[1]:
-                column[i] = NULL
-                break
-        #print column
-        self.matrix = self.putColumn(column, matrix, j)
-        #self.printMatrix(matrix)
+                #result = self._generate_pairs(column)
+                #if pair in result:
+                #    self.removePair(pair, name, j, matrix)
 
-    def putColumn(self, column, matrix, j):
+
+    def put_column(self, column, matrix, j):
         for i in xrange(0,len(matrix)):
             matrix[i][j] = column[i]
 
@@ -219,26 +215,12 @@ class Ot(object):
         #print "Name : " + str(name) + " pair: " + str(pair)
 
 
-    def _generate_pairs(self, collumn):
-        result = []
-        for i in xrange(1, len(collumn)):
-            if collumn[i] <> NULL :
-                p1 = collumn[i]
-                for j in xrange(i+1, len(collumn)):
-                    p2 = collumn[j]
-                    if p2 <> NULL :
-                        if p1 > p2:
-                            pair = (p2, p1)
-                        else:
-                            pair = (p1, p2)
-                        result.append(pair)
-        #print result
-        return result
+
 
     def _column(self, matrix, i):
         return [row[i] for row in matrix]
 
 def print_matrix(matrix):
-    #for r in matrix:
-    #   print ''.join(str(r))
+    for r in matrix:
+       print ''.join(str(r))
     print '-------------------------------------------'
