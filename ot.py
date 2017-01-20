@@ -6,14 +6,11 @@ Created on 06 Apr 2015
 
 import math
 import threading
-import collections
+from counter import Counter
 from collections import defaultdict
 
 from thread_pairs import ThreadGeneratePairs
 from itertools import groupby
-
-
-#from collections import defaultdict
 
 
 NULL = -1
@@ -24,33 +21,20 @@ class Ot(object):
         self.m = defaultdict()
         self.variable = degree*degree
         is_break = False
-       # xls = Xslxsaver()
-       # xls.create_work([degree])
         self.xls = xls
         i = 0
 
         while (not is_break):
-        #for i in xrange(0,1):
             print "Round : ", i
             pair, is_break = self._generate_all_pairs(self.matrix)
             if debug:
                 self.xls.save(self.matrix, str(i))
             i += 1
-            #pairs_removed = self._remove_repets(pairs)
-            #pair, is_break = self._max_matches(pairs_removed)
             if is_break:
-                #print "pair to break, ", pair
                 break
-
-            #print_matrix(self.matrix)
             name, self.matrix = self._change_pair(pair, self.matrix)
             print "--------------------------------------------------"
-            #xls.save(self.matrix, str(i))
-            #print_matrix(self.matrix)
-            #self._save_pair(pair, name)
-            #print_matrix(self.matrix)
-        #print self.m
-        #xls.close()
+
         return self.m, self.matrix
 
     def sort(self, matrix):
@@ -93,7 +77,7 @@ class Ot(object):
         with lockScreen:
             print("Threads Done!")
 
-        counter = collections.Counter(result)
+        counter = Counter(result)
         max_elements = sorted(counter.values(),reverse=True)[0]
         dic = dict(counter)
         to_return = (NULL,NULL)

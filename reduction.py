@@ -24,53 +24,35 @@ class Reduction(object):
 
 
     def reduction(self,exp):
-
-
         self.otimizator = Ot()
         exp_sorted = sorted(exp, reverse=True)
         self.mdegree = exp_sorted[0]
         self.max_collum = (2*exp_sorted[0])-1
-        nr = self._calc_NR(exp_sorted)
-        self.matrix = self._generate_matrix()
+        nr = self.__calc_NR__(exp_sorted)
+        self.matrix = self.__generate_matrix__()
         exp_sorted.remove(self.mdegree)
         self.matrix = self.__multiply__(self.matrix, self.mdegree)
-        #print "Finished Multiplication"
+        print "Finished Multiplication"
 
-
-        #
-        #j = 0
-        # for i in range(0,len(exp_sorted)):
-        #     self._reduce_first(self.matrix, exp_sorted[i])
-        #
-
-        j = 0
         for i in range(0,nr+1):
-            self._reduce_others(self.matrix,exp_sorted)
-            #print_matrix(self.matrix)
-            j = j+1
+            self.__reduce_others__(self.matrix,exp_sorted)
+            print_matrix(self.matrix)
+
 
         #
-        #
-        #print "Finished reduction"
-        self._remove_repeat(self.matrix)
+        self.__remove_repeat__(self.matrix)
         self.clean(self.matrix)
         self.matrix = self.otimizator.sort(self.matrix)
         self.clean(self.matrix)
-        self.matrix = self.reduce_matrix(self.mdegree, self.matrix)
-        #print "Finished Cleaning"
+        self.matrix = self.__reduce_matrix__(self.mdegree, self.matrix)
+        print "Finished Cleaning"
 
         self.p, self.matrix = self.otimizator.optimize(self.matrix, self.mdegree)
 
-        self._remove_one(self.matrix)
+        self.__remove_one__(self.matrix)
         row = [-1 for x in xrange(self.mdegree)]
         self.matrix.append(row)
-        count = self._count_xor(self.matrix,self.p)
-        #count = count + self.countMatchs(otimizator.matches)
-
-
-
-        # #print_matrix(self.matrix)
-        # #print self.p
+        count = self.__count_xor__(self.matrix,self.p)
         del self.matrix
         return count
 
@@ -104,7 +86,7 @@ class Reduction(object):
 
         return matrix
 
-    def reduce_matrix(self, degree, matrix):
+    def __reduce_matrix__(self, degree, matrix):
         #print "printing..."
         matrix_copy = [[-1 for x in range(degree)] for x in range(len(matrix))]
         for i in xrange(0, len(matrix)):
@@ -118,13 +100,13 @@ class Reduction(object):
         del matrix
         return matrix_copy
 
-    def _count_matchs(self, matches):
+    def __count_matchs__(self, matches):
         count = 0;
         for i in matches:
             count = count + (len(matches[i])-1)
         return count
 
-    def _count_xor(self, matrix, p):
+    def __count_xor__(self, matrix, p):
         rowToWrite = [-1 for x in xrange(self.mdegree)]
         row = matrix[0]
         for j in range(0,len(row)):
@@ -154,28 +136,28 @@ class Reduction(object):
     def clean(self, matrix):
         toRemove = []
         for m in matrix:
-            if self.isClean(m):
+            if self.is_clean(m):
                 toRemove.append(m)
         for i in toRemove:
             matrix.remove(i)
 
-    def isClean(self, row):
+    def is_clean(self, row):
         for i in row:
             if i <> NULL:
                 return False
         return True
 
-    def _reduce_others(self, matrix, exp):
-        to_reduce = self._need_to_reduce(matrix)
+    def __reduce_others__(self, matrix, exp):
+        to_reduce = self.__need_to_reduce__(matrix)
         for index in to_reduce:
             for e in exp:
                 reduceRow = self.reduce(matrix[index],e)
                 matrix.append(reduceRow)
-            self._clean_reduced(matrix,index)
-        self._remove_repeat(self.matrix)
+            self.__clean_reduced__(matrix,index)
+        self.__remove_repeat__(self.matrix)
         matrix = self.clean(matrix)
 
-    def _remove_one(self, matrix):
+    def __remove_one__(self, matrix):
         for j in range(1, len(matrix)):
             row = matrix[j]
             for i in range(self.mdegree-1, len(row)):
@@ -191,7 +173,7 @@ class Reduction(object):
             matrix[j] = row
 
 
-    def _remove_repeat(self, matrix):
+    def __remove_repeat__(self, matrix):
         for j in range(1, len(matrix)):
             row = matrix[j]
             for i in range(0, len(row)):
@@ -211,7 +193,7 @@ class Reduction(object):
                             break
             matrix[j] = row
 
-    def _clean_reduced(self, matrix, index):
+    def __clean_reduced__(self, matrix, index):
         row = matrix[index]
         for j in range(0,self.mdegree-1):
             row[j] = NULL
@@ -226,7 +208,7 @@ class Reduction(object):
             index = index -1
         return rowReduced
 
-    def _need_to_reduce(self, matrix):
+    def __need_to_reduce__(self, matrix):
         indexOfRows = []
         index = (self.max_collum - 1 - self.mdegree);
         for i in range(1,len(matrix)):
@@ -237,7 +219,7 @@ class Reduction(object):
         return indexOfRows
 
 
-    def _reduce_first(self, matrix, exp):
+    def __reduce_first__(self, matrix, exp):
         index = self.max_collum-1;
         row = [-1 for x in xrange(self.max_collum)]
         for j in xrange(self.mdegree-2,-1,-1):
@@ -247,7 +229,7 @@ class Reduction(object):
 
         matrix.append(row)
 
-    def _calc_NR(self, exp_sorted):
+    def __calc_NR__(self, exp_sorted):
         nr = 2
         nr = int(math.floor((exp_sorted[0]-2)/(exp_sorted[0]-exp_sorted[1])))
         #print "NR = ", nr
@@ -257,7 +239,7 @@ class Reduction(object):
         #    nr = 2* (exp_sorted[0] + 1) - exp_sorted[0]
         return nr
 
-    def _generate_matrix(self):
+    def __generate_matrix__(self):
         row = sorted(list(range(0, self.max_collum)), reverse=True)
         matrix = [row]
         return matrix
