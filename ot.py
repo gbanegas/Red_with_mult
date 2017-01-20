@@ -59,7 +59,7 @@ class Ot(object):
             column = self._column(matrix, i)
             column.sort()
             #print column
-            self.putColumn(column, matrix, i)
+            self.put_column(column, matrix, i)
         matrix = self.__remove__(matrix, "", -1)
         return matrix
 
