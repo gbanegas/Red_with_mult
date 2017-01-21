@@ -36,7 +36,7 @@ class Reduction(object):
 
         for i in range(0,nr+1):
             self.__reduce_others__(self.matrix,exp_sorted)
-            print_matrix(self.matrix)
+            #print_matrix(self.matrix)
 
 
         #
