@@ -1,4 +1,5 @@
 import threading
+import itertools
 NULL = -1
 
 class ThreadGeneratePairs(threading.Thread):
@@ -15,6 +16,8 @@ class ThreadGeneratePairs(threading.Thread):
     def run(self):
         #with self.lockscreen:
         #    print("Starting thread {}".format(self.threadID))
+        a = list(itertools.combinations(self.collumn, 2))
+
         temp = []
         for i in xrange(1, len(self.collumn)):
             if self.collumn[i] <> NULL :
@@ -29,7 +32,8 @@ class ThreadGeneratePairs(threading.Thread):
                         temp.append(pair)
 
         with self.lockscreen:
-            print "Number of Pairs : ", len(temp)," from ID: ", self.threadID 
+            print "Number of Pairs : ", len(temp)," from ID: ", self.threadID
+            print "Number of Pairs (C) : ", len(a)," from ID: ", self.threadID
         with self.locker:
             for pair in temp:
                 self.result.append(pair)
