@@ -244,6 +244,9 @@ class Reduction(object):
         matrix = [row]
         return matrix
 
+    def _column(self, matrix, i):
+        return [row[i] for row in matrix]
+
 def print_matrix(matrix):
         for r in matrix:
             print ''.join(str(r))

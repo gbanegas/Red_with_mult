@@ -28,7 +28,8 @@ class ThreadGeneratePairs(threading.Thread):
                             pair = (p1, p2)
                         temp.append(pair)
 
-
+        with self.lockscreen:
+            print "Number of Pairs : ", len(temp)," from ID: ", self.threadID 
         with self.locker:
             for pair in temp:
                 self.result.append(pair)
