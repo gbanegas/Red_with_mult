@@ -80,17 +80,22 @@ class Ot(object):
         time1 = time.time()
         counter = Counter(result)
         time2 = time.time()
-        print 'function took %0.3f ms' % ((time2-time1)*1000.0)
+        print 'Counter(result) function took %0.3f ms' % ((time2-time1)*1000.0)
+        time1 = time.time()
         max_elements = sorted(counter.values(),reverse=True)[0]
         dic = dict(counter)
+        time2 = time.time()
+        print 'dict(counter) function took %0.3f ms' % ((time2-time1)*1000.0)
         to_return = (NULL,NULL)
         index = 0
+        time1 = time.time()
         for pair, key in sorted(dic.items()):
             if key == max_elements and key > 1:
                 to_return = pair
                 index = key
                 break
-
+        time2 = time.time()
+        print 'pair, key in function took %0.3f ms' % ((time2-time1)*1000.0)
 
         if self._pair_equal(to_return , (NULL,NULL)):
             return to_return, True
@@ -157,7 +162,10 @@ class Ot(object):
     def _change_pair(self, pair, matrix):
         name = self.variable
         self.m[name] = pair
+        time1 = time.time()
         self._find_and_change(pair, matrix, name)
+        time2 = time.time()
+        print '_find_and_change function took %0.3f ms' % ((time2-time1)*1000.0)
         self.variable +=1
         #print_matrix(matrix)
         return name, matrix
