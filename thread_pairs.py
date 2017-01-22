@@ -32,6 +32,7 @@ class ThreadGeneratePairs(threading.Thread):
                         temp.append(pair)
 
         with self.lockscreen:
+            print "Column size: ", len(self.collumn)
             print "Number of Pairs : ", len(temp)," from ID: ", self.threadID
             print "Number of Pairs (C) : ", len(a)," from ID: ", self.threadID
         with self.locker:
