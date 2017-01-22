@@ -89,7 +89,7 @@ class Ot(object):
         to_return = (NULL,NULL)
         index = 0
         time1 = time.time()
-        for pair, key in sorted(dic.items()):
+        for pair, key in sorted(dic.items(), reverse=True):
             if key == max_elements and key > 1:
                 to_return = pair
                 index = key
