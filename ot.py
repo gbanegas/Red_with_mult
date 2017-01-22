@@ -75,8 +75,12 @@ class Ot(object):
         with lockScreen:
             print("Threads Done!")
 
+        print "Size pairs: ", len(result)
+
         time1 = time.time()
         counter = Counter(result)
+        time2 = time.time()
+        print 'function took %0.3f ms' % ((time2-time1)*1000.0)
         max_elements = sorted(counter.values(),reverse=True)[0]
         dic = dict(counter)
         to_return = (NULL,NULL)
@@ -86,8 +90,7 @@ class Ot(object):
                 to_return = pair
                 index = key
                 break
-        time2 = time.time()
-        print 'function took %0.3f ms' % ((time2-time1)*1000.0)
+
 
         if self._pair_equal(to_return , (NULL,NULL)):
             return to_return, True
