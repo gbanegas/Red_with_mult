@@ -83,20 +83,22 @@ class Ot(object):
         print 'Counter(result) function took %0.3f ms' % ((time2-time1)*1000.0)
         time1 = time.time()
         max_elements = sorted(counter.values(),reverse=True)[0]
+        print "Max occurence: ", max_elements
         dic = dict(counter)
         time2 = time.time()
         print 'dict(counter) function took %0.3f ms' % ((time2-time1)*1000.0)
         to_return = (NULL,NULL)
-        index = 0
         time1 = time.time()
-        for pair, key in sorted(dic.items(), reverse=True):
-            if key == max_elements and key > 1:
-                to_return = pair
-                index = key
-                break
+        if max_elements > 1:
+            to_return = dic.keys()[dic.values().index(max_elements)]
+        #print "returning, ",  pair_t
+        #for pair, key in sorted(dic.items(), reverse=True):
+        #    if key == max_elements and key > 1:
+        #        to_return = pair
+        #        break
         time2 = time.time()
         print 'pair, key in function took %0.3f ms' % ((time2-time1)*1000.0)
-
+        #print "returning, ",  to_return
         if self._pair_equal(to_return , (NULL,NULL)):
             return to_return, True
         else:
