@@ -1,5 +1,6 @@
 import threading
 import itertools
+import time
 NULL = -1
 
 class ThreadGeneratePairs(threading.Thread):
@@ -16,7 +17,11 @@ class ThreadGeneratePairs(threading.Thread):
     def run(self):
         #with self.lockscreen:
         #    print("Starting thread {}".format(self.threadID))
+        time1 = time.time()
         a = list(self.combinations(self.collumn[1::], 2))
+        time2 = time.time()
+
+
 
         # temp = []
         # for i in xrange(1, len(self.collumn)):
@@ -31,9 +36,11 @@ class ThreadGeneratePairs(threading.Thread):
         #                     pair = (p1, p2)
         #                 temp.append(pair)
         #
-        # with self.lockscreen:
+        with self.lockscreen:
+            print 'function took %0.3f ms' % ((time2-time1)*1000.0)
+            print "Number of Pairs (C) : ", len(a)," from ID: ", self.threadID
         #     print "Number of Pairs (old) : ", len(temp)," from ID: ", self.threadID
-        #     print "Number of Pairs (C) : ", len(a)," from ID: ", self.threadID
+
         #     st = ""
         #     for pair in temp:
         #         st = " " + str(pair) + " "
