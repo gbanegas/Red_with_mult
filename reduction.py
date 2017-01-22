@@ -21,8 +21,6 @@ class Reduction(object):
     def __init__(self, debug):
         self.debug = debug
 
-
-
     def reduction(self,exp):
         self.otimizator = Ot()
         exp_sorted = sorted(exp, reverse=True)
@@ -36,10 +34,7 @@ class Reduction(object):
 
         for i in range(0,nr+1):
             self.__reduce_others__(self.matrix,exp_sorted)
-            #print_matrix(self.matrix)
 
-
-        #
         self.__remove_repeat__(self.matrix)
         self.clean(self.matrix)
         self.matrix = self.otimizator.sort(self.matrix)
@@ -62,7 +57,6 @@ class Reduction(object):
             index = self.max_collum-1;
             row = [-1 for x in xrange(self.max_collum)]
             temp = 0
-            #print temp_reuse
             for j in xrange(0,self.mdegree):
                 row[index] = j + temp_reuse
                 index = index-1

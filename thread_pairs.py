@@ -5,7 +5,6 @@ NULL = -1
 
 class ThreadGeneratePairs(threading.Thread):
 
-
     def __init__(self, threadID,  locker, lockscreen, collumn, result):
         threading.Thread.__init__(self)
         self.threadID = threadID
@@ -15,47 +14,15 @@ class ThreadGeneratePairs(threading.Thread):
         self.result = result
 
     def run(self):
-        #with self.lockscreen:
-        #    print("Starting thread {}".format(self.threadID))
         time1 = time.time()
-        a = list(self.combinations(self.collumn[1::], 2))
+        combinations = list(self.combinations(self.collumn[1::], 2))
         time2 = time.time()
-
-
-
-        # temp = []
-        # for i in xrange(1, len(self.collumn)):
-        #     if self.collumn[i] <> NULL :
-        #         p1 = self.collumn[i]
-        #         for j in xrange(i+1, len(self.collumn)):
-        #             p2 = self.collumn[j]
-        #             if p2 <> NULL :
-        #                 if p1 > p2:
-        #                     pair = (p2, p1)
-        #                 else:
-        #                     pair = (p1, p2)
-        #                 temp.append(pair)
-        #
         with self.lockscreen:
             print 'function took %0.3f ms' % ((time2-time1)*1000.0)
-            print "Number of Pairs (C) : ", len(a)," from ID: ", self.threadID
-        #     print "Number of Pairs (old) : ", len(temp)," from ID: ", self.threadID
-
-        #     st = ""
-        #     for pair in temp:
-        #         st = " " + str(pair) + " "
-        #     print st
-        #     st = ""
-        #     for pair in a:
-        #         st = " " + str(pair) + " "
-        #     print st
+            print "Number of Pairs (C) : ", len(combinations)," from ID: ", self.threadID
         with self.locker:
-            for pair in a:
+            for pair in combinations:
                 self.result.append(pair)
-        #self.lockscreen.acquire()
-        #print "Thread ID: ", self.threadID, "Pairs: ", self.result
-        #self.lockscreen.release()
-        #return result
 
     def get_pairs(self):
         return self.result

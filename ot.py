@@ -8,9 +8,10 @@ import math
 import threading
 from counter import Counter
 from collections import defaultdict
+import time
 
 from thread_pairs import ThreadGeneratePairs
-from itertools import groupby
+
 
 
 NULL = -1
@@ -59,10 +60,7 @@ class Ot(object):
     	lockScreen = threading.Lock()
         threads = []
         allPairs = {}
-        #allPairs = []
-        #print matrix
         size = len(matrix[0])
-        #print "Size : " + str(size)
         result = []
         for i in xrange(0,size):
             thread = ThreadGeneratePairs(i,lockScreen, lock, self._column(self.matrix,i), result)
@@ -77,30 +75,27 @@ class Ot(object):
         with lockScreen:
             print("Threads Done!")
 
+        time1 = time.time()
         counter = Counter(result)
         max_elements = sorted(counter.values(),reverse=True)[0]
         dic = dict(counter)
         to_return = (NULL,NULL)
         index = 0
         for pair, key in sorted(dic.items()):
-            if key == max_elements:
-                if key > 1:
-                    to_return = pair
-                    index = key
-                    break
+            if key == max_elements and key > 1:
+                to_return = pair
+                index = key
+                break
+        time2 = time.time()
+        print 'function took %0.3f ms' % ((time2-time1)*1000.0)
 
-
-        #print "pair: ", to_return, " index ", index
         if self._pair_equal(to_return , (NULL,NULL)):
             return to_return, True
         else:
             return to_return, False
 
 
-        #return allPairs
-
     def _remove_repets(self, pairs):
-        #print pairs
         repeated = []
         for i in xrange(0,len(pairs)):
             for j in xrange(i+1, len(pairs)):
@@ -121,12 +116,10 @@ class Ot(object):
 
 
     def _max_matches(self, pairs_removed):
-        #print pairs_removed
         dict_of_matches = defaultdict()
         for pair in pairs_removed:
             for j in xrange(0, len(self.matrix[0])):
                 matches = self._find_matches(pair, self.matrix, j)
-                #print matches
                 if pair in dict_of_matches:
                     dict_of_matches[pair] = matches + dict_of_matches[pair]
                 else:
@@ -134,7 +127,6 @@ class Ot(object):
 
         to_return = (NULL,NULL)
         index = 1
-
 
         for pair in dict_of_matches:
             if dict_of_matches[pair] > index:
@@ -169,22 +161,21 @@ class Ot(object):
 
 
     def _find_and_change(self, pair, matrix, name):
+
         for j in xrange(0, len(matrix[0])):
                 column = self._column(matrix, j)
                 counter = 0
                 temp = -1
-                for i in xrange(0, len(column)):
-                    if pair[0] == column[i]:
-                        temp = i
-                        counter = 1
-                        break
-                for h in xrange(0, len(column)):
-                    if pair[1] == column[h] and counter > 0:
-                        column[temp] = name
-                        column[h] = NULL
-                        break
-                if column > 0:
-                    self.matrix = self.put_column(column, matrix, j)
+                if pair[0] in column and pair[1] in column:
+                    index = column.index(pair[0])
+                    column.insert(index, name)
+                    index = column.index(pair[1])
+                    column.insert(index, NULL)
+                    column.remove(pair[0])
+                    column.remove(pair[1])
+
+                #print column
+                self.matrix = self.put_column(column, matrix, j)
 
                 #result = self._generate_pairs(column)
                 #if pair in result:
