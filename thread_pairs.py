@@ -16,27 +16,25 @@ class ThreadGeneratePairs(threading.Thread):
     def run(self):
         #with self.lockscreen:
         #    print("Starting thread {}".format(self.threadID))
-        a = list(itertools.combinations(self.collumn, 2))
+        a = list(self.combinations(self.collumn, 2))
 
-        temp = []
-        for i in xrange(1, len(self.collumn)):
-            if self.collumn[i] <> NULL :
-                p1 = self.collumn[i]
-                for j in xrange(i+1, len(self.collumn)):
-                    p2 = self.collumn[j]
-                    if p2 <> NULL :
-                        if p1 > p2:
-                            pair = (p2, p1)
-                        else:
-                            pair = (p1, p2)
-                        temp.append(pair)
+        #temp = []
+        #for i in xrange(1, len(self.collumn)):
+        #    if self.collumn[i] <> NULL :
+        #        p1 = self.collumn[i]
+        #        for j in xrange(i+1, len(self.collumn)):
+        #            p2 = self.collumn[j]
+        #            if p2 <> NULL :
+        #                if p1 > p2:
+        #                    pair = (p2, p1)
+        #                else:
+        #                    pair = (p1, p2)
+        #                temp.append(pair)
 
-        with self.lockscreen:
-            print "Column size: ", len(self.collumn)
-            print "Number of Pairs : ", len(temp)," from ID: ", self.threadID
-            print "Number of Pairs (C) : ", len(a)," from ID: ", self.threadID
+        #with self.lockscreen:
+        #    print "Number of Pairs (C) : ", len(a)," from ID: ", self.threadID
         with self.locker:
-            for pair in temp:
+            for pair in a:
                 self.result.append(pair)
         #self.lockscreen.acquire()
         #print "Thread ID: ", self.threadID, "Pairs: ", self.result
@@ -45,3 +43,25 @@ class ThreadGeneratePairs(threading.Thread):
 
     def get_pairs(self):
         return self.result
+
+    def combinations(self, iterable, r):
+        # combinations('ABCD', 2) --> AB AC AD BC BD CD
+        # combinations(range(4), 3) --> 012 013 023 123
+        iterable = filter(lambda a: a != -1, iterable)
+
+        pool = tuple(iterable)
+        n = len(pool)
+        if r > n:
+            return
+        indices = list(range(r))
+        yield tuple(pool[i] for i in indices)
+        while True:
+            for i in reversed(range(r)):
+                if indices[i] != i + n - r:
+                    break
+            else:
+                return
+            indices[i] += 1
+            for j in range(i+1, r):
+                indices[j] = indices[j-1] + 1
+            yield tuple(pool[i] for i in indices)
