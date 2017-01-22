@@ -16,23 +16,32 @@ class ThreadGeneratePairs(threading.Thread):
     def run(self):
         #with self.lockscreen:
         #    print("Starting thread {}".format(self.threadID))
-        a = list(self.combinations(self.collumn, 2))
+        a = list(self.combinations(self.collumn[1::], 2))
 
-        #temp = []
-        #for i in xrange(1, len(self.collumn)):
-        #    if self.collumn[i] <> NULL :
-        #        p1 = self.collumn[i]
-        #        for j in xrange(i+1, len(self.collumn)):
-        #            p2 = self.collumn[j]
-        #            if p2 <> NULL :
-        #                if p1 > p2:
-        #                    pair = (p2, p1)
-        #                else:
-        #                    pair = (p1, p2)
-        #                temp.append(pair)
-
-        #with self.lockscreen:
-        #    print "Number of Pairs (C) : ", len(a)," from ID: ", self.threadID
+        # temp = []
+        # for i in xrange(1, len(self.collumn)):
+        #     if self.collumn[i] <> NULL :
+        #         p1 = self.collumn[i]
+        #         for j in xrange(i+1, len(self.collumn)):
+        #             p2 = self.collumn[j]
+        #             if p2 <> NULL :
+        #                 if p1 > p2:
+        #                     pair = (p2, p1)
+        #                 else:
+        #                     pair = (p1, p2)
+        #                 temp.append(pair)
+        #
+        # with self.lockscreen:
+        #     print "Number of Pairs (old) : ", len(temp)," from ID: ", self.threadID
+        #     print "Number of Pairs (C) : ", len(a)," from ID: ", self.threadID
+        #     st = ""
+        #     for pair in temp:
+        #         st = " " + str(pair) + " "
+        #     print st
+        #     st = ""
+        #     for pair in a:
+        #         st = " " + str(pair) + " "
+        #     print st
         with self.locker:
             for pair in a:
                 self.result.append(pair)
