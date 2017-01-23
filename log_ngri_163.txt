@@ -1,0 +1,68 @@
+Finished Multiplication
+Finished Cleaning
+Round :  0
+Starting threads
+function took 1338.547 ms
+Number of Pairs (C) :  102831  from ID:  0
+function took 1628.165 ms
+Number of Pairs (C) :  105111  from ID:  1
+function took 1758.014 ms
+Number of Pairs (C) :  112101  from ID:  4
+function took 2613.108 ms
+Number of Pairs (C) :  109746  from ID:  3
+function took 3641.281 ms
+Number of Pairs (C) :  107416  from ID:  2
+function took 813.832 ms
+Number of Pairs (C) :  114481  from ID:  5
+function took 3203.616 ms
+Number of Pairs (C) :  120295  from ID:  7
+function took 9063.134 ms
+Number of Pairs (C) :  144991  from ID:  15
+function took 10956.913 ms
+Number of Pairs (C) :  135460  from ID:  12
+function took 15242.992 ms
+Number of Pairs (C) :  141778  from ID:  14
+function took 7843.422 ms
+Number of Pairs (C) :  66430  from ID:  44
+function took 19702.669 ms
+Number of Pairs (C) :  158203  from ID:  19
+function took 21813.655 ms
+Number of Pairs (C) :  123256  from ID:  8
+function took 13455.609 ms
+Number of Pairs (C) :  62835  from ID:  42
+function took 13283.060 ms
+Number of Pairs (C) :  68265  from ID:  45
+function took 24420.394 ms
+Number of Pairs (C) :  232903  from ID:  39
+function took 28789.437 ms
+Number of Pairs (C) :  129286  from ID:  10
+function took 29439.826 ms
+Number of Pairs (C) :  117370  from ID:  6
+function took 28301.605 ms
+Number of Pairs (C) :  175528  from ID:  24
+function took 33896.974 ms
+Number of Pairs (C) :  126253  from ID:  9
+function took 37118.357 ms
+Number of Pairs (C) :  148240  from ID:  16
+function took 38254.024 ms
+Number of Pairs (C) :  138601  from ID:  13
+function took 36628.773 ms
+Number of Pairs (C) :  201295  from ID:  31
+function took 38962.178 ms
+Number of Pairs (C) :  151525  from ID:  17
+function took 32913.455 ms
+Number of Pairs (C) :  241165  from ID:  41
+function took 38604.217 ms
+Number of Pairs (C) :  228826  from ID:  38
+function took 38957.500 ms
+Number of Pairs (C) :  220780  from ID:  36
+function took 40679.891 ms
+Number of Pairs (C) :  212878  from ID:  34
+function took 42419.833 ms
+Number of Pairs (C) :  186355  from ID:  27
+function took 43298.540 ms
+Number of Pairs (C) :  161596  from ID:  20
+function took 44068.915 ms
+Number of Pairs (C) :  154846  from ID:  18
+function took 42113.387 ms
+Number of Pairs (C) :  224785  from ID:  37
