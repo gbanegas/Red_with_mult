@@ -18,6 +18,7 @@ class ThreadGeneratePairs(threading.Thread):
         combinations = list(self.combinations(self.collumn[1::], 2))
         time2 = time.time()
         with self.lockscreen:
+            print self.collumn
             print 'function took %0.3f ms' % ((time2-time1)*1000.0)
             print "Number of Pairs (C) : ", len(combinations)," from ID: ", self.threadID
         with self.locker:
