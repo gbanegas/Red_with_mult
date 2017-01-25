@@ -7,6 +7,8 @@ Created on 10 Sep 2014
 import math
 import re
 from ot import Ot
+from xlsx import Xslxsaver
+
 
 
 import copy
@@ -22,6 +24,8 @@ class Reduction(object):
         self.debug = debug
 
     def reduction(self,exp):
+        xls = Xslxsaver()
+        xls.create_worksheet(exp)
         self.otimizator = Ot()
         exp_sorted = sorted(exp, reverse=True)
         self.mdegree = exp_sorted[0]
@@ -30,24 +34,29 @@ class Reduction(object):
         self.matrix = self.__generate_matrix__()
         exp_sorted.remove(self.mdegree)
         self.matrix = self.__multiply__(self.matrix, self.mdegree)
+        xls.save(self.matrix, 'Multiplication')
         print "Finished Multiplication"
 
         for i in range(0,nr+1):
             self.__reduce_others__(self.matrix,exp_sorted)
+            xls.save(self.matrix, 'step_reduction_'+str(i))
 
         self.__remove_repeat__(self.matrix)
         self.clean(self.matrix)
         self.matrix = self.otimizator.sort(self.matrix)
         self.clean(self.matrix)
         self.matrix = self.__reduce_matrix__(self.mdegree, self.matrix)
+        xls.save(self.matrix, 'reduced')
         print "Finished Cleaning"
 
-        self.p, self.matrix = self.otimizator.optimize(self.matrix, self.mdegree)
+        self.p, self.matrix, self.frequency_counter, self.columns_of_pair = self.otimizator.optimize(self.matrix, self.mdegree, xls)
 
         self.__remove_one__(self.matrix)
         row = [-1 for x in xrange(self.mdegree)]
         self.matrix.append(row)
         count = self.__count_xor__(self.matrix,self.p)
+        xls.save(self.matrix, 'Optimized')
+        xls.save_matches(self.p, self.frequency_counter, self.columns_of_pair)
         del self.matrix
         return count
 
@@ -60,7 +69,6 @@ class Reduction(object):
             for j in xrange(0,self.mdegree):
                 row[index] = j + temp_reuse
                 index = index-1
-                #print index
                 temp = j + temp_reuse
             index = 2*self.mdegree - 2 - self.mdegree;
             temp_reuse = temp
@@ -102,6 +110,7 @@ class Reduction(object):
 
     def __count_xor__(self, matrix, p):
         rowToWrite = [-1 for x in xrange(self.mdegree)]
+
         row = matrix[0]
         for j in range(0,len(row)):
             countT = 0
@@ -112,6 +121,7 @@ class Reduction(object):
                     elementToCompare = rowToCompare[j]
                     if elementToCompare <> NULL or (re.search('[a-zA-Z]', str(elementToCompare)) <> None):
                         countT = countT + 1;
+                        #print "Column :", j, " count: ", countT, " element: ", elementToCompare
             rowToWrite[j] = countT
         matrix.append(rowToWrite)
         rowToCalc = matrix[len(matrix)-1]
@@ -234,8 +244,8 @@ class Reduction(object):
         return nr
 
     def __generate_matrix__(self):
-        row = sorted(list(range(0, self.max_collum)), reverse=True)
-        matrix = [row]
+        #row = sorted(list(range(0, self.max_collum)), reverse=True)
+        matrix = [[]]
         return matrix
 
     def _column(self, matrix, i):

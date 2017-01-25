@@ -7,8 +7,9 @@ Created on 06 Apr 2015
 import math
 import threading
 from counter import Counter
-from collections import defaultdict
+from collections import defaultdict, OrderedDict
 import time
+from xlsx import Xslxsaver
 
 from thread_pairs import ThreadGeneratePairs
 
@@ -18,25 +19,29 @@ NULL = -1
 class Ot(object):
 
     def optimize(self, matrix, degree, xls=None, debug=False):
+        debug = True
         self.matrix = matrix
         self.m = defaultdict()
         self.variable = degree*degree
+        self.columns_of_pair = {}
         is_break = False
         self.xls = xls
+        self.frequency_counter = {}
         i = 0
-
+        max_frequency = 0
         while (not is_break):
             print "Round : ", i
-            pair, is_break = self._generate_all_pairs(self.matrix)
+            pair, is_break, max_frequency = self._generate_all_pairs(self.matrix)
             if debug:
                 self.xls.save(self.matrix, str(i))
             i += 1
             if is_break:
                 break
             name, self.matrix = self._change_pair(pair, self.matrix)
+            self.frequency_counter[name] = max_frequency
             print "--------------------------------------------------"
 
-        return self.m, self.matrix
+        return self.m, self.matrix, self.frequency_counter, self.columns_of_pair
 
     def sort(self, matrix):
         matrix = self.__remove__(matrix, -1, "")
@@ -77,32 +82,43 @@ class Ot(object):
 
         print "Size pairs: ", len(result)
 
-        time1 = time.time()
+        #time1 = time.time()
         counter = Counter(result)
-        time2 = time.time()
-        print 'Counter(result) function took %0.3f ms' % ((time2-time1)*1000.0)
-        time1 = time.time()
-        max_elements = sorted(counter.values(),reverse=True)[0]
+        #time2 = time.time()
+        #print 'Counter(result) function took %0.3f ms' % ((time2-time1)*1000.0)
+        #time1 = time.time()
+
+        max_elements = list(sorted(counter.values(),reverse=True))[0]
         print "Max occurence: ", max_elements
-        dic = dict(counter)
-        time2 = time.time()
-        print 'dict(counter) function took %0.3f ms' % ((time2-time1)*1000.0)
+        dic = OrderedDict(sorted(counter.items(), reverse=True))
+        keys =  [item[0] for item in dic.items() if item[1] == max_elements]
+        sum_pairs = 99999999999
+
+        #dict(counter)
+        #time2 = time.time()
+        #print 'dict(counter) function took %0.3f ms' % ((time2-time1)*1000.0)
         to_return = (NULL,NULL)
-        time1 = time.time()
+        #time1 = time.time()
         if max_elements > 1:
-            to_return = dic.keys()[dic.values().index(max_elements)]
+            for key in keys:
+                if sum(key) < sum_pairs:
+                    to_return = key
+
+            #to_return = dic.keys()[dic.values().index(max_elements)]
+        #print to_return
+        #time.sleep(1100)
         #print "returning, ",  pair_t
         #for pair, key in sorted(dic.items(), reverse=True):
         #    if key == max_elements and key > 1:
         #        to_return = pair
         #        break
-        time2 = time.time()
-        print 'pair, key in function took %0.3f ms' % ((time2-time1)*1000.0)
+        #time2 = time.time()
+        #print 'pair, key in function took %0.3f ms' % ((time2-time1)*1000.0)
         #print "returning, ",  to_return
         if self._pair_equal(to_return , (NULL,NULL)):
-            return to_return, True
+            return to_return, True, max_elements
         else:
-            return to_return, False
+            return to_return, False, max_elements
 
 
     def _remove_repets(self, pairs):
@@ -174,7 +190,7 @@ class Ot(object):
 
 
     def _find_and_change(self, pair, matrix, name):
-
+        self.columns_of_pair[name] = []
         for j in xrange(0, len(matrix[0])):
                 column = self._column(matrix, j)
                 counter = 0
@@ -186,6 +202,10 @@ class Ot(object):
                     column.insert(index, NULL)
                     column.remove(pair[0])
                     column.remove(pair[1])
+                    if self.columns_of_pair[name] <> None:
+                        self.columns_of_pair[name].append(j)
+                    else:
+                        self.columns_of_pair[name] = [j]
 
                 #print column
                 self.matrix = self.put_column(column, matrix, j)
