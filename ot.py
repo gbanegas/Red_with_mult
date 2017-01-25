@@ -7,9 +7,9 @@ Created on 06 Apr 2015
 import math
 import threading
 from counter import Counter
-from collections import defaultdict, OrderedDict
+from collections import defaultdict
 import time
-from xlsx import Xslxsaver
+#from xlsx import Xslxsaver
 
 from thread_pairs import ThreadGeneratePairs
 
@@ -19,7 +19,7 @@ NULL = -1
 class Ot(object):
 
     def optimize(self, matrix, degree, xls=None, debug=False):
-        debug = True
+        #debug = True
         self.matrix = matrix
         self.m = defaultdict()
         self.variable = degree*degree
@@ -90,7 +90,7 @@ class Ot(object):
 
         max_elements = list(sorted(counter.values(),reverse=True))[0]
         print "Max occurence: ", max_elements
-        dic = OrderedDict(sorted(counter.items(), reverse=True))
+        dic = dict(sorted(counter.items(), reverse=True))
         keys =  [item[0] for item in dic.items() if item[1] == max_elements]
         sum_pairs = 99999999999
 

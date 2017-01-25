@@ -7,7 +7,7 @@ Created on 10 Sep 2014
 import math
 import re
 from ot import Ot
-from xlsx import Xslxsaver
+#from xlsx import Xslxsaver
 
 
 
@@ -24,8 +24,8 @@ class Reduction(object):
         self.debug = debug
 
     def reduction(self,exp):
-        xls = Xslxsaver()
-        xls.create_worksheet(exp)
+        #xls = Xslxsaver()
+        #xls.create_worksheet(exp)
         self.otimizator = Ot()
         exp_sorted = sorted(exp, reverse=True)
         self.mdegree = exp_sorted[0]
@@ -34,19 +34,19 @@ class Reduction(object):
         self.matrix = self.__generate_matrix__()
         exp_sorted.remove(self.mdegree)
         self.matrix = self.__multiply__(self.matrix, self.mdegree)
-        xls.save(self.matrix, 'Multiplication')
+        #xls.save(self.matrix, 'Multiplication')
         print "Finished Multiplication"
 
         for i in range(0,nr+1):
             self.__reduce_others__(self.matrix,exp_sorted)
-            xls.save(self.matrix, 'step_reduction_'+str(i))
+            #xls.save(self.matrix, 'step_reduction_'+str(i))
 
         self.__remove_repeat__(self.matrix)
         self.clean(self.matrix)
         self.matrix = self.otimizator.sort(self.matrix)
         self.clean(self.matrix)
         self.matrix = self.__reduce_matrix__(self.mdegree, self.matrix)
-        xls.save(self.matrix, 'reduced')
+        #xls.save(self.matrix, 'reduced')
         print "Finished Cleaning"
 
         self.p, self.matrix, self.frequency_counter, self.columns_of_pair = self.otimizator.optimize(self.matrix, self.mdegree, xls)
@@ -55,8 +55,8 @@ class Reduction(object):
         row = [-1 for x in xrange(self.mdegree)]
         self.matrix.append(row)
         count = self.__count_xor__(self.matrix,self.p)
-        xls.save(self.matrix, 'Optimized')
-        xls.save_matches(self.p, self.frequency_counter, self.columns_of_pair)
+        #xls.save(self.matrix, 'Optimized')
+        #xls.save_matches(self.p, self.frequency_counter, self.columns_of_pair)
         del self.matrix
         return count
 
