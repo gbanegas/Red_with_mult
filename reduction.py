@@ -49,7 +49,7 @@ class Reduction(object):
         #xls.save(self.matrix, 'reduced')
         print "Finished Cleaning"
 
-        self.p, self.matrix, self.frequency_counter, self.columns_of_pair = self.otimizator.optimize(self.matrix, self.mdegree, xls)
+        self.p, self.matrix, self.frequency_counter, self.columns_of_pair = self.otimizator.optimize(self.matrix, self.mdegree)
 
         self.__remove_one__(self.matrix)
         row = [-1 for x in xrange(self.mdegree)]
